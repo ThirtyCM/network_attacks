@@ -4,4 +4,3 @@ http nft flush ruleset
 ntp nft flush ruleset
 dns nft flush ruleset
 ftp nft flush ruleset
-internet nft flush ruleset

@@ -6,11 +6,27 @@ table ip basic_firewall {
     chain input {
         type filter hook input priority 0; policy drop;
 
-        ct state established,related accept
+        ## Accepts traffic from other workstations
+        ip saddr 10.1.0.0/24 accept
+
+        ## Receives pings back
+        icmp type echo-reply accept
+
+        ## Accepts messages from existing connections
+        ct state established accept
     }
 
     #Chain OUTPUT
     chain output {
-        type filter hook output priority 0; policy accept;
+        type filter hook output priority 0; policy drop;
+
+        ## Accepts traffic towards other workstations
+        ip daddr 10.1.0.0/24 accept
+
+        ## Sends pings
+        icmp type echo-request accept
+
+        ## Accepts new connections and established ones
+        ct state {new, established} accept
     }
 }

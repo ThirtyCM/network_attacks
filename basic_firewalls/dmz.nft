@@ -6,6 +6,10 @@ table ip basic_firewall {
     chain input {
         type filter hook input priority 0; policy drop;
 
+        ## Accepts ping
+        icmp type echo-request accept
+
+        ## Accepts new and established connections
         ct state {new, established} accept
     }
 
@@ -13,6 +17,10 @@ table ip basic_firewall {
     chain output {
         type filter hook output priority 0; policy drop;
 
+        ## Accepts ping-back
+        icmp type echo-reply accept
+
+        ## Accepts established connections
         ct state established accept
     }
 }
