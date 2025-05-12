@@ -15,7 +15,7 @@ def send_pod(dst_ip, count, size, iface):
     frags = fragment(pkt, fragsize=1480)    
     for i in range(count):
         for f in frags:
-            send(f, iface=iface, fast=True)
+            send(f, iface=iface)
         if count > 1 and (i+1) % 10 == 0:
             print(f"  · {i+1} pings sent")
 

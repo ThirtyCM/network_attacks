@@ -1,0 +1,12 @@
+#!/usr/sbin/nft -f
+
+table ip dos_protection {
+
+    #Chain INPUT
+    chain input {
+        type filter hook input priority 0;
+
+        ## Accept ping request with size under 1000 bytes
+        icmp type echo-request meta length > 150 drop
+    }
+}
