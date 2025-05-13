@@ -66,3 +66,16 @@ If the port is open, you'll see something like:
 
 If there's a firewall, you'll see:
 > filtered or No open ports detected.
+
+#### DoS Attack
+It throws giant fragmented ICMP packets to cause crashes or flooding.
+ > ws2 python3 DoS_attack.py 10.12.0.10 -c 50 -i ws2-eth0
+
+ * 50 packets
+
+ ##### How to see if it works:
+ Just doing ping from another host:
+ > ping 10.12.0.10
+If it don't respond or lose packets, it works.
+
+#### SYN Flood
