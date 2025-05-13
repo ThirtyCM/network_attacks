@@ -76,6 +76,37 @@ It throws giant fragmented ICMP packets to cause crashes or flooding.
  ##### How to see if it works:
  Just doing ping from another host:
  > ping 10.12.0.10
+
 If it don't respond or lose packets, it works.
 
 #### SYN Flood
+Saturate a server's port with SYN requests.
+> ws2 python3 SYN_flood.py 10.12.0.10 80 -t 4 -r 500 -i ws2-eth0
+
+Where: 
+  * 10.12.0.10: Target server IP
+
+  * 80: Web port
+
+  * -t 4: 4 threads (more power)
+ 
+  * -r 500: 500 packets per second per thread
+
+##### How to see if it works:
+ Doing ping from another host.
+
+ #### DDoS attack
+ Send a burst of UDP or TCP packets from fake addresses.
+
+ > ws2 python3 DDoS_attack.py --proto udp 10.12.0.10 5353 -s 1400 -d 60 -i ws2-eth0
+
+Where:
+  * 5353: Typical UDP port (e.g., multicast DNS)
+
+  * -s 1400: Packet size
+
+  * -d 60: Duration in seconds
+
+##### How to see if it works:
+On the http:
+> tcpdump -i http-eth0
