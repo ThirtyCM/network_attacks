@@ -44,11 +44,12 @@ Where:
 
   *ws2-eth0: attacker's interface 
 
-#####How to see if it works:
+###### How to see if it works:
   From ws3, ping 10.12.0.1 (or any other host).
 
   From ws2, open another terminal and type:
   > ws2 tcpdump -i ws2-eth0
-→ If you see ICMP packets, the MITM attack is working
+
+ If you see ICMP packets, the MITM attack is working
 
 
