@@ -36,13 +36,13 @@ DMZ servers will only send these packets :
 The objective is to interrupt or intercept traffic between a victim and the router (r1).
 > ws2 python3 arp_spoofing.py --target 10.1.0.3 --gateway 10.1.0.1 -i ws2-eth0
 Where:
-  *ws2: attacker
+  * ws2: attacker
 
-  *10.1.0.3: IP of ws3 (victim)
+  * 10.1.0.3: IP of ws3 (victim)
 
-  *10.1.0.1: IP of router R1 on the ws3 network
+  * 10.1.0.1: IP of router R1 on the ws3 network
 
-  *ws2-eth0: attacker's interface 
+  * ws2-eth0: attacker's interface 
 
 ###### How to see if it works:
   From ws3, ping 10.12.0.1 (or any other host).
