@@ -1,0 +1,28 @@
+#!/usr/sbin/nft -f
+
+table ip scan_protection {
+
+    set blacklist {
+        type ipv4_addr
+        flags dynamic, timeout
+        timeout 30s
+    }
+
+    #Chain INPUT
+    chain input {
+        type filter hook input priority 0;
+
+        ## Add ip addresses that try to make more than 5 new connections/second to the blacklist
+        ip protocol tcp ct state new limit rate over 5/second add @blacklist {ip saddr}
+
+        ## For XMAS scans
+        tcp flags & (fin|psh|urg) == (fin|psh|urg) limit rate over 5/second add @blacklist {ip saddr}
+
+        tcp flags == 0x00 limit rate over 5/second add @blacklist {ip saddr}
+
+        tcp flags & (fin|syn|rst|psh|ack|urg) == fin limit rate over 5/second add @blacklist {ip saddr}
+
+        ## Drop packets from ip addresses in the blacklist
+        ip saddr @blacklist drop
+    }
+}
