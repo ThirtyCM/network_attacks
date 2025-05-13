@@ -1,0 +1,11 @@
+#!/usr/sbin/nft -f
+
+table ip flood_protection {
+
+    #Chain INPUT
+    chain input {
+        type filter hook input priority 0;
+
+        meta l4proto tcp limit rate over 5/second drop
+    }
+}

