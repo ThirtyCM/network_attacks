@@ -32,7 +32,7 @@ DMZ servers will only send these packets :
 * Packets that are part of an established connection (such that DMZ servers cannot create new ones)
 
 ## Attacks
-#### Network Scan
+#### ARP Spoofing
 The objective is to interrupt or intercept traffic between a victim and the router (r1).
 > ws2 python3 arp_spoofing.py --target 10.1.0.3 --gateway 10.1.0.1 -i ws2-eth0
 
@@ -45,7 +45,7 @@ Where:
 
   * ws2-eth0: attacker's interface 
 
-###### How to see if it works:
+##### How to see if it works:
   From ws3, ping 10.12.0.1 (or any other host).
 
   From ws2, open another terminal and type:
@@ -53,4 +53,16 @@ Where:
 
  If you see ICMP packets, the MITM attack is working
 
+#### Port scanning
+Discover which ports are open.
+> ws2 python3 port_scan.py 10.12.0.10 -p 20-1024,8080 -m syn --banner
 
+Where:
+ * -m syn: scan type (can try ack, xmas, etc.)
+
+##### How to see if it works:
+If the port is open, you'll see something like:
+> Open ports: 80, 21
+
+If there's a firewall, you'll see:
+> filtered or No open ports detected.
