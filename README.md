@@ -35,6 +35,7 @@ DMZ servers will only send these packets :
 #### Network Scan
 The objective is to interrupt or intercept traffic between a victim and the router (r1).
 > ws2 python3 arp_spoofing.py --target 10.1.0.3 --gateway 10.1.0.1 -i ws2-eth0
+
 Where:
   * ws2: attacker
 
