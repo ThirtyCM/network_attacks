@@ -6,6 +6,8 @@ table ip basic_firewall {
     chain input {
         type filter hook input priority 0; policy drop;
 
+        ip saddr 10.12.0.0/24 accept
+
         ## Accepts ping
         icmp type echo-request accept
 
@@ -16,6 +18,8 @@ table ip basic_firewall {
     #Chain OUTPUT
     chain output {
         type filter hook output priority 0; policy drop;
+
+        ip daddr 10.12.0.0/24 accept
 
         ## Accepts ping-back
         icmp type echo-reply accept

@@ -18,7 +18,7 @@ def blast(proto, dst_ip, dst_port, size, duration, iface):
         ip  = IP(src=f"198.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(1,254)}",
                  dst=dst_ip, ttl=random.randint(16,255))
         l4  = layer(sport=random.randint(1024,65535), dport=dst_port)
-        send(ip/l4/payload, iface=iface, fast=True)
+        send(ip/l4/payload, iface=iface)
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser()

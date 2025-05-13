@@ -6,7 +6,7 @@ table ip dos_protection {
     chain input {
         type filter hook input priority 0;
 
-        ## Accept ping request with size under 1000 bytes
+        ## Drop ping request with size over 150 bytes
         icmp type echo-request meta length > 150 drop
     }
 }

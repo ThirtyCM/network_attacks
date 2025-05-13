@@ -1,0 +1,13 @@
+#!/usr/sbin/nft -f
+
+table ip ddos_protection {
+
+    #Chain INPUT
+    chain input {
+        type filter hook input priority 0;
+
+        # Limit udp and tcp packet rate to 5/seconds
+        meta l4proto tcp limit rate over 5/second drop
+        meta l4proto udp limit rate over 5/second drop
+    }
+}
