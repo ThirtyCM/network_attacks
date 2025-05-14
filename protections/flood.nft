@@ -6,6 +6,6 @@ table ip flood_protection {
     chain input {
         type filter hook input priority 0;
 
-        meta l4proto tcp limit rate over 5/second drop
+        tcp dport http meter max_con {ip saddr ct count over 5} counter drop
     }
 }
