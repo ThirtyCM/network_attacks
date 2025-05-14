@@ -24,89 +24,44 @@ Workstations will send packets if :
 ### DMZ servers protection
 #### Input hook
 DMZ servers will only receive packets if :
+* They come from another DMZ server
 * It is a ping (ICMP echo-request)
 * The packet is part of an already established connection or asking to create a new one
 #### Output hook
 DMZ servers will only send these packets :
+* Packets destinated towards other DMZ servers
 * ICMP echo-reply (to respond to pings)
 * Packets that are part of an established connection (such that DMZ servers cannot create new ones)
 
 ## Attacks
-#### ARP Spoofing
-The objective is to interrupt or intercept traffic between a victim and the router (r1).
-> ws2 python3 arp_spoofing.py --target 10.1.0.3 --gateway 10.1.0.1 -i ws2-eth0
-
-Where:
-  * ws2: attacker
-
-  * 10.1.0.3: IP of ws3 (victim)
-
-  * 10.1.0.1: IP of router R1 on the ws3 network
-
-  * ws2-eth0: attacker's interface 
-
-##### How to see if it works:
-  From ws3, ping 10.12.0.1 (or any other host).
-
-  From ws2, open another terminal and type:
-  > ws2 tcpdump -i ws2-eth0
-
- If you see ICMP packets, the MITM attack is working
-
-#### Port scanning
+### Port scanning
 Discover which ports are open.
-> ws2 python3 port_scan.py 10.12.0.10 -p 20-1024,8080 -m syn --banner
+> host python3 attacks/port_scan.py <target_ip> -p <port_range> -m syn --banner
 
 Where:
- * -m syn: scan type (can try ack, xmas, etc.)
+ * <mode>: scan type (syn, null, fin, ack, xmas, etc.)
+ * <port_range>: comma separated values (list) / 2 values separated by an hyphen (range)
 
-##### How to see if it works:
-If the port is open, you'll see something like:
-> Open ports: 80, 21
-
-If there's a firewall, you'll see:
-> filtered or No open ports detected.
-
-#### DoS Attack
+### DoS Attack
 It throws giant fragmented ICMP packets to cause crashes or flooding.
- > ws2 python3 DoS_attack.py 10.12.0.10 -c 50 -i ws2-eth0
+ > host python3 attacks/DoS_attack.py <target_ip> -c <ping_count>
 
- * 50 packets
+### SYN Flood
+Saturate a server's port 80 with SYN requests.
+> host python3 attacks/SYN_flood.py <target_ip> -t <thread_number> -r <rate/thread>
 
- ##### How to see if it works:
- Just doing ping from another host:
- > ping 10.12.0.10
-
-If it don't respond or lose packets, it works.
-
-#### SYN Flood
-Saturate a server's port with SYN requests.
-> ws2 python3 SYN_flood.py 10.1.0.3 80 -t 4 -r 500 -i ws2-eth0
-
-Where: 
-  * 10.1.0.3: Target server IP
-
-  * 80: Web port
-
-  * -t 4: 4 threads (more power)
- 
-  * -r 500: 500 packets per second per thread
-
-##### How to see if it works:
- Doing ping from another host, and monitorizing the victim host to see the packets arriving
-
- #### DDoS attack
+ ### DDoS attack
  Send a burst of UDP or TCP packets from fake addresses.
 
- > ws2 python3 DDoS_attack.py --proto udp 10.12.0.10 5353 -s 1400 -d 60 -i ws2-eth0
+ > host python3 attacks/DDoS_attack.py --proto <protocol> <target_ip> <target_port> -s <packet_size> -d <duration (seconds)> 
 
-Where:
-  * 5353: Typical UDP port (e.g., multicast DNS)
+ ## Attack protections
+ Protections can be deployed on an host by executing this command: 
+ 
+ > host nft -f protections/script
 
-  * -s 1400: Packet size
-
-  * -d 60: Duration in seconds
-
-##### How to see if it works:
-On the http:
-> tcpdump -i http-eth0
+ Where script is:
+* ddos.nft -> protects the host against the DDoS attack
+* dos.nft -> protects the host against the DoS attack
+* flood.nft -> protects the host against the SYN flood attack
+* scan.nft -> protects the host again the scan
