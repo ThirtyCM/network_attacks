@@ -81,10 +81,10 @@ If it don't respond or lose packets, it works.
 
 #### SYN Flood
 Saturate a server's port with SYN requests.
-> ws2 python3 SYN_flood.py 10.12.0.10 80 -t 4 -r 500 -i ws2-eth0
+> ws2 python3 SYN_flood.py 10.1.0.3 80 -t 4 -r 500 -i ws2-eth0
 
 Where: 
-  * 10.12.0.10: Target server IP
+  * 10.1.0.3: Target server IP
 
   * 80: Web port
 
@@ -93,7 +93,7 @@ Where:
   * -r 500: 500 packets per second per thread
 
 ##### How to see if it works:
- Doing ping from another host.
+ Doing ping from another host, and monitorizing the victim host to see the packets arriving
 
  #### DDoS attack
  Send a burst of UDP or TCP packets from fake addresses.
